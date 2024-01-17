@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание 04</title>
+</head>
+
+<body>
+    <script>
+        /*
+        Задание:
+        Напишите сценарий, который выполняет GET запрос по адресу https://jsonplaceholder.typicode.com/todos
+        И выводит содержимое ответа в виде таблицы.
+        */
+
+        // Промис для выполнения GET запроса
+        let promise = fetch("https://jsonplaceholder.typicode.com/todos");
+
+        // Обработка ответа от сервера
+        promise
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Ошибка HTTP: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+              
+                let table = document.createElement('table');
+
+                
+                let thead = table.createTHead();
+                let headerRow = thead.insertRow();
+                for (let key in data[0]) {
+                    let th = document.createElement('th');
+                    th.textContent = key;
+                    headerRow.appendChild(th);
+                }
+
+                
+                let tbody = table.createTBody();
+                data.forEach(item => {
+                    let row = tbody.insertRow();
+                    for (let key in item) {
+                        let cell = row.insertCell();
+                        cell.textContent = item[key];
+                    }
+                });
+
+                
+                document.body.appendChild(table);
+            })
+            .catch(error => {
+                console.error('Произошла ошибка:', error);
+            });
+    </script>
+</body>
+
+</html>
